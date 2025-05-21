@@ -10,7 +10,7 @@ pipeline {
 
         // Maven and build details
         M2_HOME = tool 'M3' // Referencing your Maven tool configuration in Jenkins
-        JDK_HOME = tool 'jdk17' // Referencing your JDK tool configuration in Jenkins
+        JDK_HOME = tool 'JDK_17' // Referencing your JDK tool configuration in Jenkins
         MAVEN_TARGET_JAR = 'target/java-hello-world-1.0-SNAPSHOT.jar' // Update if your pom.xml changes
         ARTIFACT_ID = 'java-hello-world' // From pom.xml
         VERSION = '1.0.0' // Can be dynamically pulled from pom.xml in a real pipeline
@@ -36,8 +36,8 @@ pipeline {
 
         // EC2 Deployment details
         EC2_DEPLOY_USER = 'ubuntu'
-        EC2_DEPLOY_HOST = '18.191.202.22' // <-- REPLACE WITH YOUR JAVA-APP-EC2-DEPLOYMENT PUBLIC IP!
-        EC2_DEPLOY_SSH_CREDENTIALS_ID = 'ec2-deployment-ssh-key' // From Jenkins credentials
+        EC2_DEPLOY_HOST = '18.191.202.22' 
+        EC2_DEPLOY_SSH_CREDENTIALS_ID = 'ec2-deployment-ssh-key' 
         APP_DEPLOY_PATH = '/opt/app' // Directory on EC2 for the JAR
 
         // EKS Deployment details (if applicable)
@@ -49,7 +49,7 @@ pipeline {
     tools {
         maven 'M3'
         jdk 'JDK_17'
-        // sonarScanner 'SonarScanner'
+        SonarqubeScanner 'SonarScanner'
         // Add Docker if installed as a tool rather than via 'agent any'
         // docker 'docker' // If you have a Docker tool configured
     }
@@ -58,7 +58,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo "Checking out Git repository: ${GIT_REPO_URL}"
-                git credentialsId: GIT_CREDENTIALS_ID, url: GIT_REPO_URL, branch: 'main' // Or 'master'
+                git credentialsId: GIT_CREDENTIALS_ID, url: GIT_REPO_URL, branch: 'master'
             }
         }
 
@@ -107,7 +107,7 @@ pipeline {
 
                     def rtMaven = Artifactory.newMavenBuild()
                     rtMaven.tool = 'M3' // Maven tool ID
-                    rtMaven.jdk = 'jdk17' // JDK tool ID
+                    rtMaven.jdk = 'JDK_17' // JDK tool ID
 
                     rtMaven.deployer.deploy artifacts: fileList(MAVEN_TARGET_JAR), \
                         buildInfo: buildInfo, \
