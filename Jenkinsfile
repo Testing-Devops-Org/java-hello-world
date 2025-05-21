@@ -50,8 +50,8 @@ pipeline {
         maven 'M3'
         jdk 'jdk17'
         sonarScanner 'SonarScanner'
-        # Add Docker if installed as a tool rather than via 'agent any'
-        # docker 'docker' // If you have a Docker tool configured
+        // Add Docker if installed as a tool rather than via 'agent any'
+        // docker 'docker' // If you have a Docker tool configured
     }
 
     stages {
