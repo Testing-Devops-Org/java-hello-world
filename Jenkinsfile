@@ -49,8 +49,8 @@ pipeline {
     tools {
         maven 'M3'
         jdk 'JDK_17'
-        // SonarqubeScanner 'SonarScanner'
-        // Add Docker if installed as a tool rather than via 'agent any'
+        sonarscanner 'SonarScanner'
+        // Add Docker if installed as a tool rather than via 'sagent any'
         // docker 'docker' // If you have a Docker tool configured
     }
 
@@ -200,7 +200,7 @@ pipeline {
 
     post {
         always {
-            echo "Pipeline finished for ${BUILD_NAME}"
+            echo "Pipeline finished for ${env.JOB_NAME}-${env.BUILD_NUMBER}"
             // Clean up workspace
             cleanWs()
         }
