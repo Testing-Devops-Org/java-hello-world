@@ -17,7 +17,7 @@ pipeline {
         BUILD_NAME = "${env.JOB_NAME}-${env.BUILD_NUMBER}"
 
         // SonarCloud details
-        SONARCLOUD_SCANNER_HOME = tool 'SonarScanner' // Referencing your SonarQube Scanner tool
+        SONARCLOUD_SCANNER_HOME = tool hudson.plugins.sonar.SonarRunnerInstallation 
         SONARCLOUD_URL = 'https://sonarcloud.io'
         SONARCLOUD_PROJECT_KEY = 'Testing-Devops-Org_java-hello-world' // From your SonarCloud project page
         SONARCLOUD_ORGANIZATION = 'testing-devops-org' // From your SonarCloud organization (all lowercase)
@@ -49,7 +49,7 @@ pipeline {
     tools {
         maven 'M3'
         jdk 'JDK_17'
-        sonarRunner 'SonarScanner'
+        sonarRunner hudson.plugins.sonar.SonarRunnerInstallation
         // Add Docker if installed as a tool rather than via 'sagent any'
         // docker 'docker' // If you have a Docker tool configured
     }
