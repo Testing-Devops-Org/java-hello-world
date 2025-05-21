@@ -49,7 +49,7 @@ pipeline {
     tools {
         maven 'M3'
         jdk 'JDK_17'
-        sonarscanner 'SonarScanner'
+        sonarRunner 'SonarScanner'
         // Add Docker if installed as a tool rather than via 'sagent any'
         // docker 'docker' // If you have a Docker tool configured
     }
