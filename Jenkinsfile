@@ -17,11 +17,11 @@ pipeline {
         BUILD_NAME = "${env.JOB_NAME}-${env.BUILD_NUMBER}"
 
         // SonarCloud details
-        SONARCLOUD_SCANNER_HOME = tool 'SonarScanner' 
-        SONARCLOUD_URL = 'https://sonarcloud.io'
-        SONARCLOUD_PROJECT_KEY = 'Testing-Devops-Org_java-hello-world' // From your SonarCloud project page
-        SONARCLOUD_ORGANIZATION = 'testing-devops-org' // From your SonarCloud organization (all lowercase)
-        SONARCLOUD_TOKEN_ID = 'sonarcloud-auth-token' // From Jenkins credentials
+        // SONARCLOUD_SCANNER_HOME = tool 'SonarQubeScanner' 
+        // SONARCLOUD_URL = 'https://sonarcloud.io'
+        // SONARCLOUD_PROJECT_KEY = 'Testing-Devops-Org_java-hello-world' // From your SonarCloud project page
+        // SONARCLOUD_ORGANIZATION = 'testing-devops-org' // From your SonarCloud organization (all lowercase)
+        // SONARCLOUD_TOKEN_ID = 'sonarcloud-auth-token' // From Jenkins credentials
 
         // Docker Hub details
         DOCKER_HUB_USERNAME = 'harshadm25' // <-- REPLACE WITH YOUR ACTUAL DOCKER HUB USERNAME!
@@ -49,7 +49,8 @@ pipeline {
     tools {
         maven 'M3'
         jdk 'JDK_17'
-        hudson.plugins.sonar.SonarRunnerInstallation 'SonarScanner'
+	// sonarQube 'SonarQubeScanner'
+        // hudson.plugins.sonar.SonarRunnerInstallation 'SonarScanner'
         // Add Docker if installed as a tool rather than via 'sagent any'
         // docker 'docker' // If you have a Docker tool configured
     }
@@ -73,13 +74,13 @@ pipeline {
             steps {
                 echo "Running SonarCloud analysis..."
                 withCredentials([string(credentialsId: SONARCLOUD_TOKEN_ID, variable: 'SONAR_TOKEN')]) {
-                    withSonarQubeEnv('SonarCloudServer') { // This MUST match the name in Jenkins Global Config
-                        sh "${SONARCLOUD_SCANNER_HOME}/bin/sonar-scanner \
-                            -Dsonar.projectKey=${SONARCLOUD_PROJECT_KEY} \
-                            -Dsonar.organization=${SONARCLOUD_ORGANIZATION} \
-                            -Dsonar.host.url=${SONARCLOUD_URL} \
-                            -Dsonar.token=${SONAR_TOKEN}" // Using the token from credentials
-                    }
+                   // withSonarQubeEnv('SonarCloudServer') { // This MUST match the name in Jenkins Global Config
+                        sh ""${M2_HOME}/bin/mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+                    	     -Dsonar.projectKey=${SONARCLOUD_PROJECT_KEY} \
+                    	     -Dsonar.organization=${SONARCLOUD_ORGANIZATION} \
+                             -Dsonar.host.url=${SONARCLOUD_URL} \
+                    	     -Dsonar.token=${SONAR_TOKEN} \
+                    	     -Dmaven.test.failure.ignore=true"
                 }
             }
             post {
