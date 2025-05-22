@@ -36,7 +36,7 @@ pipeline {
 
         // EC2 Deployment details
         EC2_DEPLOY_USER = 'ubuntu'
-        EC2_DEPLOY_HOST = '18.191.202.22' 
+        EC2_DEPLOY_HOST = '18.219.10.90' 
         EC2_DEPLOY_SSH_CREDENTIALS_ID = 'ec2-deployment-ssh-key' 
         APP_DEPLOY_PATH = '/opt/app' // Directory on EC2 for the JAR
 
@@ -49,7 +49,7 @@ pipeline {
     tools {
         maven 'M3'
         jdk 'JDK_17'
-        tool(type: hudson.plugins.sonar.SonarRunnerInstallation, name: 'SonarScanner')ss
+        hudson.plugins.sonar.SonarRunnerInstallation 'SonarScanner'
         // Add Docker if installed as a tool rather than via 'sagent any'
         // docker 'docker' // If you have a Docker tool configured
     }
