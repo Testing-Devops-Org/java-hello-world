@@ -75,12 +75,12 @@ pipeline {
                 echo "Running SonarCloud analysis..."
                 withCredentials([string(credentialsId: SONARCLOUD_TOKEN_ID, variable: 'SONAR_TOKEN')]) {
                    // withSonarQubeEnv('SonarCloudServer') { // This MUST match the name in Jenkins Global Config
-                        sh ""${M2_HOME}/bin/mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+                        sh """${M2_HOME}/bin/mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
                     	     -Dsonar.projectKey=${SONARCLOUD_PROJECT_KEY} \
                     	     -Dsonar.organization=${SONARCLOUD_ORGANIZATION} \
                              -Dsonar.host.url=${SONARCLOUD_URL} \
                     	     -Dsonar.token=${SONAR_TOKEN} \
-                    	     -Dmaven.test.failure.ignore=true"
+                    	     -Dmaven.test.failure.ignore=true"""
                 }
             }
             post {
